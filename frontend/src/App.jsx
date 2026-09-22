@@ -16,12 +16,14 @@ function App() {
 
   return (
     <main className="app">
-      <h1>Turnera</h1>
-      <p>Sistema de turnos para clases de guitarra.</p>
-      <p className={`status status--${status}`}>
-        Backend:{' '}
-        {status === 'ok' ? 'conectado' : status === 'error' ? 'sin conexión' : 'verificando…'}
-      </p>
+      <section className="card">
+        <h1>Turnera</h1>
+        <p>Sistema de turnos para clases de guitarra.</p>
+        <p className={`status status--${status}`}>
+          <span className="detail">Backend:</span>{' '}
+          {status === 'ok' ? 'conectado' : status === 'error' ? 'sin conexión' : 'verificando…'}
+        </p>
+      </section>
     </main>
   )
 }

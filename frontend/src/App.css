@@ -3,15 +3,42 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 100vh;
+  gap: 16px;
+  min-height: 100svh;
+  padding: 24px;
   text-align: center;
-  font-family: system-ui, -apple-system, Roboto, sans-serif;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 32px 40px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--surface);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+}
+
+.card h1 {
+  margin: 0;
+  font-size: 40px;
+  letter-spacing: -0.5px;
+  color: var(--accent);
+}
+
+.card .detail {
+  color: var(--detail);
 }
 
 .status--ok {
-  color: #16a34a;
+  color: var(--ok);
 }
 
 .status--error {
-  color: #dc2626;
+  color: var(--error);
+}
+
+.status--checking {
+  color: var(--text-dim);
 }
