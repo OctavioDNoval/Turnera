@@ -1,0 +1,17 @@
+.app {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  text-align: center;
+  font-family: system-ui, -apple-system, Roboto, sans-serif;
+}
+
+.status--ok {
+  color: #16a34a;
+}
+
+.status--error {
+  color: #dc2626;
+}

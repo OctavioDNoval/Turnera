@@ -1,0 +1,59 @@
+name: turnera
+
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: turnera-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-turnera}
+      POSTGRES_USER: ${POSTGRES_USER:-turnera}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-turnera_secret}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-turnera} -d ${POSTGRES_DB:-turnera}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - turnera-net
+
+  backend:
+    build:
+      context: ./backend
+    container_name: turnera-backend
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/${POSTGRES_DB:-turnera}
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER:-turnera}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:-turnera_secret}
+      SPRING_PROFILES_ACTIVE: docker
+    ports:
+      - "${BACKEND_PORT:-8080}:8080"
+    networks:
+      - turnera-net
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: turnera-frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "${FRONTEND_PORT:-8081}:80"
+    networks:
+      - turnera-net
+
+volumes:
+  pgdata:
+
+networks:
+  turnera-net:
+    driver: bridge

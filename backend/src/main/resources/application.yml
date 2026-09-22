@@ -1,0 +1,29 @@
+spring:
+  application:
+    name: turnera-backend
+  datasource:
+    url: jdbc:postgresql://localhost:5432/turnera
+    username: turnera
+    password: turnera_secret
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+
+server:
+  port: 8080
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always
+
+logging:
+  level:
+    org.hibernate.SQL: debug

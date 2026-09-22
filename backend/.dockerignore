@@ -1,0 +1,12 @@
+target
+.git
+.gitignore
+Dockerfile
+.dockerignore
+.idea
+*.iml
+.mvn/wrapper/maven-wrapper.jar
+mvnw
+mvnw.cmd
+mvnwDebug
+mvnwDebug.cmd

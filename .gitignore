@@ -1,24 +1,53 @@
-# Compiled class file
+# =========================
+# Entorno y secretos
+# =========================
+.env
+.env.*
+!.env.example
+*.local
+
+# =========================
+# Java / Maven (Backend)
+# =========================
 *.class
-
-# Log file
 *.log
-
-# BlueJ files
-*.ctxt
-
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
-
-# Package Files #
-*.jar
-*.war
-*.nar
-*.ear
-*.zip
-*.tar.gz
-*.rar
-
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+target/
+build/
+.mvn/timing.properties
 hs_err_pid*
 replay_pid*
+
+# =========================
+# Node / Vite (Frontend)
+# =========================
+node_modules/
+dist/
+dist-ssr/
+.vite/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# =========================
+# IDE / Editores
+# =========================
+.idea/
+*.iml
+.vscode/
+*.swp
+*.swo
+
+# =========================
+# Sistema operativo
+# =========================
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# =========================
+# Varios
+# =========================
+*.tmp
+.cache/
+coverage/
