@@ -42,3 +42,60 @@
 .status--checking {
   color: var(--text-dim);
 }
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: min(320px, 100%);
+  text-align: left;
+}
+
+.form label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 14px;
+  color: var(--text-dim);
+}
+
+.form input {
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface-2);
+  color: var(--text);
+  font: inherit;
+}
+
+.form input:focus {
+  outline: 2px solid var(--detail);
+  outline-offset: 0;
+  border-color: transparent;
+}
+
+.card button {
+  padding: 10px 14px;
+  border: none;
+  border-radius: 8px;
+  background: var(--accent);
+  color: #1c1917;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.card button:hover {
+  background: var(--accent-hover);
+}
+
+.card button:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.error {
+  margin: 0;
+  font-size: 14px;
+  color: var(--error);
+}

@@ -1,0 +1,24 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:turnera;MODE=PostgreSQL;DB_CLOSE_DELAY=-1
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        format_sql: false
+
+turnera:
+  jwt-secret: test-secret-at-least-32-bytes-long-for-hs256
+  jwt-expiration-minutes: 60
+  cors-allowed-origins: http://localhost:5173
+  admin-username: profesor_test
+  admin-password: test_password
+  admin-name: Profesor Test
+
+logging:
+  level:
+    org.hibernate.SQL: warn

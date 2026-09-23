@@ -15,6 +15,14 @@ spring:
 server:
   port: 8080
 
+turnera:
+  jwt-secret: ${TURNERA_JWT_SECRET:turnera-dev-secret-cambiar-en-produccion-0123456789}
+  jwt-expiration-minutes: ${TURNERA_JWT_EXPIRATION_MINUTES:480}
+  cors-allowed-origins: ${TURNERA_CORS_ALLOWED_ORIGINS:http://localhost:5173}
+  admin-username: ${TURNERA_ADMIN_USERNAME:profesor}
+  admin-password: ${TURNERA_ADMIN_PASSWORD:turnera_dev_password}
+  admin-name: ${TURNERA_ADMIN_NAME:Profesor}
+
 management:
   endpoints:
     web:

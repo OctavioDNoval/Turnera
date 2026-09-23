@@ -32,8 +32,8 @@ la multi-tenencia.*
 | Backend: skeleton Spring Boot + `/api/health` | ✅ Hecho |
 | Frontend: skeleton React + Vite + check de salud | ✅ Hecho |
 | Conexión a Postgres (JPA/JDBC) | 🟡 Configurada, sin tablas todavía |
-| Modelo de datos (tablas) | 🟡 **Definido** (§7) — entidades y repos a crear |
-| Autenticación JWT (login profesor) | 🟡 Planteado, a implementar (ver §9) |
+| Modelo de datos (tablas) | 🟡 **Definido** (§7) — entidades y repos creados, tablas vía `ddl-auto` |
+| Autenticación JWT (login profesor) | ✅ Funcionando (login + seed + API protegida) |
 | Registro de usuarios / roles | ⏳ Pendiente |
 | Módulo de turnos (CRUD + disponibilidad) | ⏳ Pendiente |
 | Módulo de alumnos | ⏳ Pendiente |
@@ -88,8 +88,11 @@ Turnera/
     ├── mvnw / mvnw.cmd  ← Maven wrapper (no depende de instalación global)
     └── src/main/java/com/turnera/
         ├── TurneraApplication.java
-        ├── web/HealthController.java   ← GET /api/health
-        └── (en curso, §9) entity/ · repository/ · security/ · api/ · config/
+        ├── entity/          ← Teacher, Student, AvailabilitySlot, Appointment, AppointmentStatus
+        ├── repository/      ← repos JPA (incl. consulta de solapamiento de turnos)
+        ├── security/        ← SecurityConfig, JwtTokenService, TeacherUserDetailsService
+        ├── config/          ← DataInitializer (seed profesor inicial)
+        └── web/             ← HealthController, AuthController, ApiExceptionHandler, dto/
 ```
 
 ---
@@ -99,7 +102,7 @@ Turnera/
 > Marcar con ✅ lo resuelto, con ⏳ lo pendiente y con ⚠️ lo en discusión.
 
 ### Autenticación (profesor)
-- 🟡 Login del profesor con JWT (planteado, a implementar — ver §9).
+- ✅ Login del profesor con JWT (implementado — ver §9).
 - ⏳ Registro de usuarios y roles (profesor vs alumno).
 - ⏳ Sesión persistente / refresh tokens.
 
@@ -228,24 +231,28 @@ docker compose logs -f backend
 
 ---
 
-## 9. Autenticación — JWT (en curso)
+## 9. Autenticación — JWT (funcionando)
 
 ### Visión y decisión
 Los usuarios (público) van a **ver los profesores disponibles** y reservar turnos —futuro—; cada
 profesor tiene **su propia cuenta** y gestiona su disponibilidad. Hoy el sistema es de **un solo
-profesor**, así que arrancamos con el **login del profesor**, mínimo y multi-tenant-ready.
+profesor** y el **login del profesor** es el único autenticado, mínimo y multi-tenant-ready.
 
-### Alcance planeado (a implementar)
+### Implementado
 1. `Teacher` es la cuenta de login del profesor único (seed inicial) y el dueño de negocio para el
    futuro multi-tenant.
 2. `POST /api/auth/login` → `{ username, password }` → `{ token, name }`. Toda la API bajo
-   `/api/**` queda protegida, salvo `/api/health` y `/api/auth/**`.
+   `/api/**` queda protegida, salvo `/api/health`, `/actuator/health` y `/api/auth/**`.
 3. Stack: `spring-boot-starter-security` + `spring-boot-starter-oauth2-resource-server` (Nimbus
    JOSE/JWT, HS256). Sin librerías JWT externas. Contraseñas con BCrypt.
 4. Seed del profesor por variables de entorno: `TURNERA_ADMIN_USERNAME`, `TURNERA_ADMIN_PASSWORD`,
-   `TURNERA_JWT_SECRET`.
+   `TURNERA_ADMIN_NAME`; secret del token en `TURNERA_JWT_SECRET` y expiración configurable
+   (default 8 h).
 5. Frontend: pantalla de login; token en **localStorage** enviado con `Authorization: Bearer`.
-   Guard de rutas que exija sesión para las pantallas internas.
+   Guard de rutas (`ProtectedRoute`) que exige sesión para las pantallas internas.
+6. Errores de auth en JSON (`{error, message}`) vía entry point + `ApiExceptionHandler`.
+7. Tests: `JwtTokenServiceTest` (unitario) y `AuthControllerIntegrationTest` (MockMvc + H2 en
+   memoria con `MODE=PostgreSQL`; cubre login OK, credenciales inválidas y acceso sin token).
 
 ### Queda fuera por ahora (a propósito)
 - Registro y roles (profesor/alumno), refresh tokens, logout en backend.
